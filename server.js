@@ -1,3 +1,7 @@
+// --- NEW: Force Node.js to prefer IPv4 addresses ---
+// This is the fix for the ENETUNREACH error on Render.
+require('dns').setDefaultResultOrder('ipv4first');
+
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
