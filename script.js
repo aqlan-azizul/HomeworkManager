@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // IMPORTANT: Replace this with your actual Render backend URL
-    const API_BASE_URL = 'https://homeworkmanager.onrender.com';
+    const API_BASE_URL = 'https://homeworkmanager-1.onrender.com';
 
     let currentClassHomework = [];
 

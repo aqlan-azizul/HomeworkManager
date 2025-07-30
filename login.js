@@ -2,7 +2,7 @@ document.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     // IMPORTANT: Replace this with your actual Render backend URL
-    const API_BASE_URL = 'https://homeworkmanager.onrender.com';
+    const API_BASE_URL = 'https://homeworkmanager-1.onrender.com';
 
     const username = event.target.username.value;
     const password = event.target.password.value;
