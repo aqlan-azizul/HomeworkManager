@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // IMPORTANT: Replace this with your actual Render backend URL
-    const API_BASE_URL = 'https://your-backend-app-name.onrender.com';
+    const API_BASE_URL = 'https://homeworkmanager.onrender.com';
 
     // --- Dropdown Content Lists ---
     const subjectList = ["Al-Quran", "Feqah", "Sirah", "Hadis", "Hafazan", "Akhlak", "Bahasa Arab", "Khat", "Jawi", "Tauhid", "UPKK A", "UPKK B", "UPKK C", "UPSRA A", "UPSRA B", "UPSRA C"];
