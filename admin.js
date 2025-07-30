@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // IMPORTANT: Replace this with your actual Render backend URL
+    const API_BASE_URL = 'https://your-backend-app-name.onrender.com';
+
     // --- Dropdown Content Lists ---
     const subjectList = ["Al-Quran", "Feqah", "Sirah", "Hadis", "Hafazan", "Akhlak", "Bahasa Arab", "Khat", "Jawi", "Tauhid", "UPKK A", "UPKK B", "UPKK C", "UPSRA A", "UPSRA B", "UPSRA C"];
     const classList = ["1 Al-Ghazali", "1 As-Syafie", "2 Al-Ghazali", "2 As-Syafie", "3 Al-Ghazali", "3 As-Syafie", "4 Al-Ghazali", "4 As-Syafie", "5 Al-Ghazali", "5 As-Syafie", "6 Al-Ghazali", "6 As-Syafie"];
@@ -7,8 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Get HTML Elements ---
     const homeworkTableBody = document.getElementById('homework-table-body');
     const addHomeworkForm = document.getElementById('add-homework-form');
-    const API_URL = 'http://localhost:3000/api/homework';
-
+    
     const editModal = document.getElementById('edit-modal');
     const editForm = document.getElementById('edit-homework-form');
     const closeModalBtn = document.getElementById('close-modal-btn');
@@ -30,7 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const fetchAndDisplayHomework = async () => {
         try {
-            const response = await fetch(API_URL);
+            // Use the live API URL
+            const response = await fetch(`${API_BASE_URL}/api/homework`);
             const homeworks = await response.json();
             
             homeworkTableBody.innerHTML = '';
@@ -76,7 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            await fetch(API_URL, {
+            // Use the live API URL
+            await fetch(`${API_BASE_URL}/api/homework`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newHomeworkData)
@@ -90,11 +94,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     homeworkTableBody.addEventListener('click', async (e) => {
+        const id = e.target.dataset.id;
+        
         if (e.target.classList.contains('delete-btn')) {
-            const id = e.target.dataset.id;
             if (confirm('Are you sure you want to delete this assignment?')) {
                 try {
-                    await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                    // Use the live API URL
+                    await fetch(`${API_BASE_URL}/api/homework/${id}`, { method: 'DELETE' });
                     fetchAndDisplayHomework();
                 } catch (error) {
                     console.error('Error deleting homework:', error);
@@ -103,8 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (e.target.classList.contains('edit-btn')) {
-            const id = e.target.dataset.id;
-            const response = await fetch(`${API_URL}/item/${id}`);
+            // Use the live API URL
+            const response = await fetch(`${API_BASE_URL}/api/homework/item/${id}`);
             const hw = await response.json();
             
             editForm.elements.id.value = hw.id;
@@ -123,15 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Handle submitting the edit form
     editForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(editForm);
         const id = formData.get('id');
-        const methods = formData.getAll('method'); // Correctly get all selected methods
+        const methods = formData.getAll('method');
         
-        // --- THIS IS THE CORRECTED PART ---
-        // Get data using the input's 'name' attribute, which is correct in the HTML.
         const updatedHomework = {
             subject: formData.get('subject'),
             class: formData.get('class'),
@@ -141,7 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
             notes: formData.get('notes')
         };
         
-        await fetch(`${API_URL}/${id}`, {
+        // Use the live API URL
+        await fetch(`${API_BASE_URL}/api/homework/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updatedHomework)

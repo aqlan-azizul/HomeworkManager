@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // IMPORTANT: Replace this with your actual Render backend URL
+    const API_BASE_URL = 'https://your-backend-app-name.onrender.com';
+
     let currentClassHomework = [];
 
     // --- Get HTML Elements ---
@@ -8,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const homeworkList = document.getElementById('homework-list');
     
     const colorPalette = [
-        // Border colors
         'border-indigo-500', 'border-emerald-500', 'border-rose-500', 
         'border-sky-500', 'border-amber-500', 'border-fuchsia-500'
     ];
@@ -22,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Create cards without grouping by subject first
         assignments.forEach(item => {
             if (!subjectColorMap[item.subject]) {
                 const colorIndex = Object.keys(subjectColorMap).length;
@@ -31,12 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const subjectColorClass = subjectColorMap[item.subject];
 
             const card = document.createElement('div');
-            // Card structure with new styling
             card.className = `bg-white rounded-lg shadow-md overflow-hidden border-l-4 ${subjectColorClass} transition-transform hover:scale-[1.02]`;
             
             const formattedDate = new Date(item.dueDate + 'T00:00:00');
             const today = new Date();
-            today.setHours(0,0,0,0); // Normalize today's date
+            today.setHours(0,0,0,0);
             const isPastDue = formattedDate < today;
 
             card.innerHTML = `
@@ -77,7 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
         homeworkList.innerHTML = `<div class="text-center text-slate-500 py-16"><p>Loading assignments...</p></div>`;
 
         try {
-            const response = await fetch(`http://localhost:3000/api/homework/${selectedClass}`);
+            // Use the live API URL
+            const response = await fetch(`${API_BASE_URL}/api/homework/${selectedClass}`);
             currentClassHomework = await response.json();
 
             const subjects = ['All Subjects', ...new Set(currentClassHomework.map(hw => hw.subject))];
