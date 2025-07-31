@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const fetchAndDisplayHomework = async () => {
         try {
-            // Use the live API URL
             const response = await fetch(`${API_BASE_URL}/api/homework`);
             const homeworks = await response.json();
             
@@ -79,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            // Use the live API URL
             await fetch(`${API_BASE_URL}/api/homework`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -99,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.classList.contains('delete-btn')) {
             if (confirm('Are you sure you want to delete this assignment?')) {
                 try {
-                    // Use the live API URL
                     await fetch(`${API_BASE_URL}/api/homework/${id}`, { method: 'DELETE' });
                     fetchAndDisplayHomework();
                 } catch (error) {
@@ -109,19 +106,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (e.target.classList.contains('edit-btn')) {
-            // Use the live API URL
             const response = await fetch(`${API_BASE_URL}/api/homework/item/${id}`);
             const hw = await response.json();
             
             editForm.elements.id.value = hw.id;
-            editForm.elements['subject'].value = hw.subject;
-            editForm.elements['class'].value = hw.class;
-            editForm.elements['assignment'].value = hw.assignment;
-            editForm.elements['dueDate'].value = hw.dueDate;
-            editForm.elements['notes'].value = hw.notes;
+            editForm.elements['edit-subject'].value = hw.subject;
+            editForm.elements['edit-class'].value = hw.class;
+            editForm.elements['edit-assignment'].value = hw.assignment;
+            editForm.elements['edit-dueDate'].value = hw.dueDate;
+            editForm.elements['edit-notes'].value = hw.notes;
 
             const selectedMethods = hw.method ? hw.method.split(', ') : [];
-            Array.from(editForm.elements['method'].options).forEach(option => {
+            Array.from(editForm.elements['edit-method'].options).forEach(option => {
                 option.selected = selectedMethods.includes(option.value);
             });
             
@@ -135,16 +131,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = formData.get('id');
         const methods = formData.getAll('method');
         
+        // BUG FIX: Use the correct form field names for the edit form
         const updatedHomework = {
-            subject: formData.get('subject'),
-            class: formData.get('class'),
+            subject: formData.get('edit-subject'),
+            class: formData.get('edit-class'),
             method: methods.join(', '),
-            assignment: formData.get('assignment'),
-            dueDate: formData.get('dueDate'),
-            notes: formData.get('notes')
+            assignment: formData.get('edit-assignment'),
+            dueDate: formData.get('edit-dueDate'),
+            notes: formData.get('edit-notes')
         };
         
-        // Use the live API URL
         await fetch(`${API_BASE_URL}/api/homework/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
